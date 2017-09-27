@@ -1,0 +1,31 @@
+{% extends "post-sm.html" %}
+
+{% block like-type %}like-question{% endblock %}
+
+{% block dislike-type %}dislike-question{% endblock %}
+
+{% block like-data %}{{ question.id }}{% endblock %}
+
+{% block post-rating %}<p id="rating-count-{{ question.id }}">{{ question.rating }}</p>{% endblock %}
+
+{% block dislike-data %}{{ question.id }}{% endblock %}
+
+{% block post-title %}
+<div class="headline">
+	<a href="{% url 'question' question.id %}">{{ question.title }}</a>
+</div>
+{% endblock %}
+
+{% block post-content %}
+	{{ question.text }}
+{% endblock %}
+
+{% block post-addons %}
+<a href="{% url 'question' question.id %}">Answer ({{ question.count_answers }})</a> Tags: 
+				{% for tag in question.tags.all %}
+					<a href="{% url 'tag-questions' tag.name %}"> {{ tag.name }}</a> 
+				{% endfor %}	
+<div>
+    Asked by: <a href="#">{{ question.author.user.first_name }}</a>
+</div>
+{% endblock %}

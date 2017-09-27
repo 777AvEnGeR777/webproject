@@ -1,0 +1,47 @@
+<div class="question {{ question_type }}">
+	<div class="row">
+		{% if question_type %}
+		<div class="col-sm-2">
+		{% else %}
+        <div class="col-sm-1">
+		{% endif %}
+			<div align="center" class="rating">
+                {% block avatar %}
+				<img class="{{ avatar_type }}" src="{{ MEDIA_URL }}{{ question.author.avatar }}"><br>
+                {% endblock %}
+                {% if user.is_authenticated %}
+				<div>
+                    <button class="btn {% block like-class %}like-question{% endblock %}" data-id="{% block like-data %}{% endblock %}" like-type="like" type="button">+</button>
+                </div>
+                {% endif %}
+				<div align="center">{% block post-rating %}{% endblock %}</div>
+                {% if user.is_authenticated %}
+				<div>
+                    <button class="btn {% block dislike-class %}like-question{% endblock %}" data-id="{% block dislike-data %}{% endblock %}" like-type="dislike" type="button">
+                        -
+                    </button>
+                </div>
+                {% endif %}
+			</div>
+		</div>
+		{% if question_type %}
+		<div class="col-sm-10">
+		{% else %}
+        <div class="col-sm-11">
+		{% endif %}
+			<div class="headline">
+				{% block post-title %}{% endblock %}
+			</div>
+            <div class="margin-tb5">
+			{% block post-content %}{% endblock %}
+            </div>
+		</div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="margin-tb5 margin-l15">
+            {% block post-addons %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</div>

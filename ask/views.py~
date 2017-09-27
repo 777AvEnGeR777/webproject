@@ -1,0 +1,216 @@
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from ask.forms import LoginForm, SignupForm, QuestionForm
+
+def hello(request):
+    body = 'Hello, World! By Django\n'
+
+    body += 'GET parameters:\n'
+    body += parse(request.GET)
+    
+    body += 'POST parameters:\n'
+    body += parse(request.POST)
+
+    return HttpResponse(body, content_type="text/plain")
+
+def parse(params):
+    result = ''
+    for key, val in params.iteritems():
+        result += key + '=' + val + '\n'
+    return result
+
+def paginate(objects_list, request):
+    paginator = Paginator(objects_list, 10)
+
+    page = request.GET.get('page')
+    try:
+        objects_page = paginator.page(page)
+    except (PageNotAnInteger, EmptyPage):
+        objects_page = paginator.page(1)
+
+    paginator_variables = {
+        'page_range': paginator.page_range,
+        'next_page': paginator.num_pages,
+        'prev_page': 1,
+    }
+    if (objects_page.has_previous()):
+        paginator_variables['prev_page'] = objects_page.previous_page_number
+    if (objects_page.has_next()):
+        paginator_variables['next_page'] = objects_page.next_page_number
+
+    return objects_page, paginator_variables
+
+def get_popular_tags():
+    top_tags = []
+    for i in xrange(1, 6):
+        top_tags.append({
+            'text': 'tag ' + str(i),
+        })
+    return top_tags
+
+def get_best_members():
+    best_members = []
+    for i in xrange(1, 6):
+        best_members.append({
+            'nickname': 'member ' + str(i),
+        })
+    return best_members
+
+def new(request):
+    _questions = []
+    for i in xrange(1, 30):
+        _questions.append({
+            'title': 'Question Title ' + str(i),
+            'id': i,
+            'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ',
+            'rating': i,
+            'answers': i,
+            'tags' : [{ 'text': 'tag1' }, { 'text': 'tag2' }, { 'text': 'tag3' }],
+        })
+
+    top_tags = get_popular_tags()
+    best_members = get_best_members()
+
+    questions, paginator = paginate(_questions, request)
+
+    context = {
+        'questions': questions,
+        'top_tags': top_tags,
+        'best_members': best_members,
+        'paginator': paginator,
+    }
+ 
+    return render(request, 'index.html', context)
+
+def hot(request):
+    _questions = []
+    for i in xrange(1, 30):
+        _questions.append({
+            'title': 'Hot Question Title ' + str(i),
+            'id': i,
+            'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ',
+            'rating': i,
+            'answers': i,
+            'tags' : [{ 'text': 'tag1' }, { 'text': 'tag2' }, { 'text': 'tag3' }],
+        })
+
+    top_tags = get_popular_tags()
+    best_members = get_best_members()
+
+    questions, paginator = paginate(_questions, request)
+
+    context = {
+        'questions': questions,
+        'top_tags': top_tags,
+        'best_members': best_members,
+        'paginator': paginator,
+    }
+ 
+    return render(request, 'hot.html', context)
+
+def tag(request, *args, **kwargs):
+    _questions = []
+    for i in xrange(1, 30):
+        _questions.append({
+            'title': 'Tag Question Title ' + str(i),
+            'id': i,
+            'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ',
+            'rating': i,
+            'answers': i,
+            'tags' : [{ 'text': 'tag1' }, { 'text': 'tag2' }, { 'text': 'tag3' }],
+        })
+
+    top_tags = get_popular_tags()
+    best_members = get_best_members()
+
+    tag = kwargs.get('tag');
+    questions, paginator = paginate(_questions, request)
+
+    context = {
+        'questions': questions,
+        'top_tags': top_tags,
+        'best_members': best_members,
+        'paginator': paginator,
+        'tag': tag,
+    }
+ 
+    return render(request, 'tag.html', context)
+
+def question(request, *args, **kwargs):
+    qid = kwargs.get('qid');
+    question = { 
+        'title': 'Question Title ' + str(qid),
+        'id': qid,
+        'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        'rating' : qid,
+        'answers' : qid,
+        'tags' : [{ 'text': 'tag1' }, { 'text': 'tag2' }, { 'text': 'tag3' }],
+    }
+
+    _answers = []
+    for i in xrange(1, 30):
+        _answers.append({
+            'content': 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. ',
+            'rating': i,
+        })
+    
+    top_tags = get_popular_tags()
+    best_members = get_best_members()
+
+    answers, paginator = paginate(_answers, request)
+
+    context = {
+        'question': question,
+        'top_tags': top_tags,
+        'best_members': best_members,
+        'paginator': paginator,
+        'answers': answers,
+    }
+ 
+    return render(request, 'question.html', context)
+
+def login(request):
+    top_tags = get_popular_tags()
+    best_members = get_best_members()
+    form = LoginForm()
+    context = {
+        'top_tags': top_tags,
+        'best_members': best_members,
+        'form': form,
+    }
+    return render(request, 'login.html', context)
+
+def logout(request):
+    return
+
+def signup(request):
+    top_tags = get_popular_tags()
+    best_members = get_best_members()
+    form = SignupForm()
+    context = {
+        'top_tags': top_tags,
+        'best_members': best_members,
+        'form': form,
+    }
+    return render(request, 'signup.html', context)
+
+def ask(request):
+    top_tags = get_popular_tags()
+    best_members = get_best_members()
+    form = QuestionForm()
+    context = {
+        'top_tags': top_tags,
+        'best_members': best_members,
+        'form': form,
+    }
+    return render(request, 'ask.html', context)
+
+def settings(request):
+    top_tags = get_popular_tags()
+    best_members = get_best_members()
+    context = {
+        'top_tags': top_tags,
+        'best_members': best_members,
+    }
+    return render(request, 'settings.html', context)

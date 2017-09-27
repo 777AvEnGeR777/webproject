@@ -1,0 +1,43 @@
+from django.db import models
+from django.contrib.auth.models import User
+from datetime import datetime
+
+GOOD_RATING = 10
+class Profile(models.Model):
+    avatar = models.ImageField(upload_to="avatars/")
+    user = models.OneToOneField(User)
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=25)
+
+class QuestionManager(models.Manager):
+    def hot_questions(self):
+        return self.filter(rating_gt=GOOD_RATING).order_by(['-rating'])
+
+    def new_questions(self):
+        return self.order_by('-created_at')
+
+class Question(models.Model):
+    title = models.CharField(max_length=75)
+    text = models.TextField()
+    author = models.ForeignKey(User)
+    rating = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_add_now=True)
+    tags = models.ManyToManyField(Tag)    
+
+    objects = QuestionManager() 
+
+    def get_url():
+        return "/question/%d/" % self.pk   
+
+    def __unicode__(self):
+        return u'{0} - {1}'.format(self.id, self.title)
+
+
+class Answer(models.Model):
+    question = models.ForeignKey(Question)
+    text = models.TextField()
+    author = models.ForeignKey(User)
+    rating = models.IntegerField()
+    is_correct = models.BooleanField()

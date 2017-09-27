@@ -1,0 +1,62 @@
+.question {
+    margin-bottom: 20px;
+    border: 1px solid #e7e7e7;
+    border-radius: 4px;
+}
+.question img {
+    width: 50px;
+    height: 50px;
+	margin: 0px 10px;
+}
+.question.main {
+	border: 0px;
+}
+.headline {
+	font-size: 150%;
+}
+.avatar {
+	width:35px;
+	height:35px;
+	margin:5px;
+}
+.avatar.big {
+	width:75px;
+	height:75px;
+}
+.logo {
+	width:70px;
+	height:70px;
+	margin-top:-25px;
+}
+.rating {
+	font-weight: bold;
+	margin-right: -19px;
+}
+.new-question input[type=text] {
+	width: 80%;
+}
+.new-question textarea {
+	width: 80%;
+	resize: none;
+}
+.new-question div {
+	margin: 5px 0px;
+}
+.margin-tb5 {
+	margin: 5px 0px;
+}
+.margin-l15 {
+    margin-left: 15px;
+}
+.answer {
+	width: 100%;
+	resize: none;
+}
+.red {
+	color: red;
+}
+.footer {
+    margin-top: 20px;
+	padding-top: 15px;
+}
+

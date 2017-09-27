@@ -1,0 +1,18 @@
+<div class="headline">
+	Popular Tags
+</div>
+<div>
+	{% for tag in top_tags %}
+		<a href="{% url 'tag-questions' tag.name %}"> {{ tag.name }}</a>
+	{% endfor %}
+</div>
+<div class="headline">
+	Best Members
+</div>
+<div>
+	<ul style="list-style-type:none;padding-left:0px">
+		{% for member in best_members %}
+			<li><a href"#">{{ member.user.first_name }}</a></li>
+		{% endfor %}
+	</ul>
+</div>

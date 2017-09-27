@@ -1,0 +1,29 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block tab-title %}Stack Underflow{% endblock %}</title>
+    <link rel="stylesheet" type="text/css" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+
+<body class="container">
+    {% block js %}{ % endblock %}
+    {% include "navbar.html" %}
+    <div class="row">
+        <div class="col-sm-10">
+			<div class="headline">
+				{% block page-title %}{% endblock %}
+			</div>
+        	{% block page-content %}{% endblock %}    
+        </div>
+        <div class="col-sm-2">
+            {% include "sidebar.html" %}
+        </div>
+    </div>
+	<div class="navbar navbar-default footer" align="center">
+		Sokolov Mikhail 2017
+	</div> 
+</body>
+</html>

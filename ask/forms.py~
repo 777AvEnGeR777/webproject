@@ -1,0 +1,18 @@
+from django import forms
+
+class LoginForm(forms.Form):
+    login = forms.CharField(label="Login:", max_length = 30)
+    password = forms.CharField(label="Password:", widget=forms.PasswordInput())
+
+class SignupForm(forms.Form):
+    login = forms.CharField(label="Login:", max_length = 30)
+    email = forms.EmailField(label="E-mail:")
+    nickname = forms.CharField(label="Nickname:", max_length = 30)
+    password = forms.CharField(label="Password:", widget=forms.PasswordInput())
+    confirm_password = forms.CharField(label="Confirm password:", widget=forms.PasswordInput())
+    avatar = forms.FileField(label="Upload avatar:", required=False)
+
+class QuestionForm(forms.Form):
+    title = forms.CharField(label="Title:", max_length=75)
+    text = forms.CharField(widget=forms.Textarea, label="Text:", max_length=5000)
+    tags = forms.CharField(label="Tags:", max_length=75)

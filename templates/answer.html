@@ -1,0 +1,40 @@
+{% extends "post-sm.html" %}
+
+{% block like-class %}like-answer{% endblock %}
+{% block dislike-class %}like-answer{% endblock %}
+
+{% block like-data %}{{ answer.pk }}{% endblock %}
+
+{% block post-rating %}<p id="answer-rating-count-{{ answer.id }}">{{ answer.rating }}</p>{% endblock %}
+
+{% block dislike-data %}{{ answer.pk }}{% endblock %}
+
+{% block avatar %}
+    <img class="{{ avatar_type }}" src="{{ MEDIA_URL }}{{ answer.author.avatar }}"><br>
+{% endblock %}
+
+{% block post-content %}
+    <a name="{{ answer.id }}"></a>
+    <b>Answer from: <a href="#">{{ answer.author.user.first_name }}</a></b><br>
+    {{ answer.text }}
+{% endblock %}
+
+{% block post-addons %}
+{% if question.author.user == request.user %}
+<div class="checkbox">
+	<label>
+        {% if answer.is_correct %}    
+            <input type="checkbox" data-id="{{ answer.id }}" checked> Correct
+        {% else %}
+            <input type="checkbox" data-id="{{ answer.id }}"> Correct
+        {% endif %}
+    </label>
+</div>
+{% elif answer.is_correct %}
+<div class="checkbox">
+	<label> 
+        <input type="checkbox" disabled="disabled" checked> Correct
+    </label>
+</div>
+{% endif %}
+{% endblock %}

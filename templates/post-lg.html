@@ -1,0 +1,21 @@
+<div class="question main">
+	<div class="row">
+        <div class="col-sm-1">
+			<div align="center" class="rating">
+				<img src="{{ MEDIA_URL }}{{ question.author.avatar }}"><br>
+				<div class="btn">+</div>
+				<div align="center">{% block post-rating %}{% endblock %}</div>
+				<div class="btn">-</div>
+			</div>
+		</div>
+        <div class="col-sm-11">
+			<div class="headline">
+				{% block post-title %}{% endblock %}
+			</div>
+			{% block post-content %}{% endblock %}
+			<div>
+				{% block post-addons %}{% endblock %}
+			</div>
+		</div>
+    </div>
+</div>

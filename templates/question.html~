@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block tab-title %}Stack Underflow - {{ question.title }}{% endblock %}
+
+{% block js %}
+    <script src="/js/jquery/jquery.min.js"></script>
+    <script src="/js/like.js"></script>
+{% endblock %}
+
+{% block page-content %}
+	{% include "question-lg.html" with question_type="main" avatar_type="avatar big" %}
+    <hr>
+	{% for answer in answers %}
+		{% include "answer.html" %}
+	{% endfor %}
+    <hr>
+    {% if user.is_authenticated %}
+	    <form name="answer" method="post">	
+            {% csrf_token %}
+            {% for field in form %}
+                {{ field }}
+            {% endfor %}			
+		    <div align="right">				
+			    <button type="submit" class="btn btn-default">ANSWER</button>
+		    </div>
+	    </form>
+    {% else %}
+        You should <a href="{% url 'login' %}?next={{ request.get_full_path }}">Log In</a> to answer!
+    {% endif %}
+	{% include "paginator.html" %}
+{% endblock %}
